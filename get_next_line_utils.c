@@ -6,18 +6,17 @@
 /*   By: joandre- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 00:05:06 by joandre-          #+#    #+#             */
-/*   Updated: 2023/12/20 02:26:03 by joandre-         ###   ########.fr       */
+/*   Updated: 2023/12/21 23:31:31 by joandre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-void	clean_buffer(char *buffer)
+void	clean_buffer(char *buffer, size_t len)
 {
-	size_t	i;
-
-	i = BUFFER_SIZE + 1;
-	while (i--)
-		buffer[i] = '\0';
+	if (!buffer || len == 0)
+		return ;
+	while (len--)
+		buffer[len] = '\0';
 }
 
 bool	is_newline(t_list *node)
@@ -66,7 +65,7 @@ void	copy_line(t_list *node, char *line)
 	size_t	i;
 	size_t	j;
 
-	if (!node)
+	if (!node || !line)
 		return ;
 	j = 0;
 	while (node)
@@ -83,18 +82,4 @@ void	copy_line(t_list *node, char *line)
 		}
 		node = node->next;
 	}
-}
-
-char	*get_line(t_list *node)
-{
-	char	*line;
-
-	if (!node)
-		return (NULL);
-	line = malloc(get_line_size(node) + 1);
-	if (!line)
-		return (NULL);
-	clean_buffer(line);
-	copy_line(node, line);
-	return (line);
 }

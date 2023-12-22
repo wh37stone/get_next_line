@@ -6,7 +6,7 @@
 /*   By: joandre- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 01:29:46 by joandre-          #+#    #+#             */
-/*   Updated: 2023/12/20 02:58:52 by joandre-         ###   ########.fr       */
+/*   Updated: 2023/12/22 02:27:18 by joandre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -20,10 +20,12 @@ static t_list	*last_node(t_list *node)
 	return (node);
 }
 
-static t_list	*free_node(t_list **node, t_list *new_node, char *buffer)
+static t_list	*free_node(t_list **node, t_list *new, char *buffer)
 {
 	t_list	*linx;
 
+	if (!node || !new || !buffer)
+		return (NULL);
 	while (*node)
 	{
 		linx = (*node)->next;
@@ -31,16 +33,15 @@ static t_list	*free_node(t_list **node, t_list *new_node, char *buffer)
 		free(*node);
 		*node = linx;
 	}
-	*node = NULL;
-	if (new_node->buff[0])
-		*node = new_node;
+	if (new->buff[0])
+		*node = new;
 	else
 	{
 		free(buffer);
-		free(new_node);
+		free(new);
 		return (NULL);
 	}
-	return (new_node);
+	return (new);
 }
 
 static t_list	*clear_list(t_list **node)
@@ -50,18 +51,19 @@ static t_list	*clear_list(t_list **node)
 	size_t	i;
 	size_t	j;
 
+	if (!(*node))
+		return (NULL);
 	buffer = malloc(BUFFER_SIZE + 1);
 	new = malloc(sizeof(t_list));
 	if (!buffer || !new)
 		return (NULL);
-	clean_buffer(buffer);
-	*node = last_node((*node));
+	clean_buffer(buffer, BUFFER_SIZE + 1);
 	i = 0;
-	while ((*node)->buff[i] && (*node)->buff[i] != '\n')
+	while ((last_node(*node))->buff[i] && (last_node(*node))->buff[i] != '\n')
 		i++;
 	j = 0;
-	while ((*node)->buff[i] && (*node)->buff[++i] != '\n')
-		buffer[j++] = (*node)->buff[i];
+	while ((last_node(*node))->buff[++i])
+		buffer[j++] = (last_node(*node))->buff[i];
 	new->buff = buffer;
 	new->next = NULL;
 	return (free_node(node, new, buffer));
@@ -77,7 +79,7 @@ static void	create_list(t_list **node, int fd)
 		buffer = malloc(BUFFER_SIZE + 1);
 		if (!buffer)
 			return ;
-		clean_buffer(buffer);
+		clean_buffer(buffer, BUFFER_SIZE + 1);
 		if (read(fd, buffer, BUFFER_SIZE) <= 0)
 		{
 			free(buffer);
@@ -105,7 +107,11 @@ char	*get_next_line(int fd)
 	create_list(&node, fd);
 	if (!node)
 		return (NULL);
-	line = get_line(node);
+	line = malloc(get_line_size(node) + 1);
+	if (!line)
+		return (NULL);
+	clean_buffer(line, get_line_size(node) + 1);
+	copy_line(node, line);
 	node = clear_list(&node);
 	return (line);
 }
