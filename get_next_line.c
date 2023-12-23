@@ -6,7 +6,7 @@
 /*   By: joandre- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 01:29:46 by joandre-          #+#    #+#             */
-/*   Updated: 2023/12/22 02:27:18 by joandre-         ###   ########.fr       */
+/*   Updated: 2023/12/23 02:25:58 by joandre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -101,9 +101,12 @@ char	*get_next_line(int fd)
 {
 	char			*line;
 	static t_list	*node;
+	static char		*wipe;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (wipe)
+		free(wipe);
 	create_list(&node, fd);
 	if (!node)
 		return (NULL);
@@ -113,5 +116,6 @@ char	*get_next_line(int fd)
 	clean_buffer(line, get_line_size(node) + 1);
 	copy_line(node, line);
 	node = clear_list(&node);
+	wipe = line;
 	return (line);
 }
