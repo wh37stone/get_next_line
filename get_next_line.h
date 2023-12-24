@@ -6,14 +6,13 @@
 /*   By: joandre- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 02:38:32 by joandre-          #+#    #+#             */
-/*   Updated: 2023/12/23 03:13:54 by joandre-         ###   ########.fr       */
+/*   Updated: 2023/12/24 14:32:05 by joandre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdbool.h>
