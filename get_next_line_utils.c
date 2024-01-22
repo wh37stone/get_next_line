@@ -6,7 +6,7 @@
 /*   By: joandre- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 00:05:06 by joandre-          #+#    #+#             */
-/*   Updated: 2023/12/21 23:31:31 by joandre-         ###   ########.fr       */
+/*   Updated: 2024/01/22 13:21:02 by joandre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -29,12 +29,12 @@ bool	is_newline(t_list *node)
 		while (node->buff[i])
 		{
 			if (node->buff[i] == '\n')
-				return (1);
+				return (true);
 			i++;
 		}
 		node = node->next;
 	}
-	return (0);
+	return (false);
 }
 
 size_t	get_line_size(t_list *node)
