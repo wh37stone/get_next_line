@@ -6,7 +6,7 @@
 /*   By: joandre- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 01:29:46 by joandre-          #+#    #+#             */
-/*   Updated: 2024/02/11 20:28:12 by joandre-         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:46:28 by joandre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -117,7 +117,9 @@ char	*get_next_line(int fd)
 	return (line);
 }
 /*
- int	main(void)
+#include <fcntl.h>
+#include <stdio.h>
+int	main(void)
 {
 	char	*line;
 	int	fd;
