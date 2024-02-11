@@ -6,7 +6,7 @@
 /*   By: joandre- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 01:29:46 by joandre-          #+#    #+#             */
-/*   Updated: 2023/12/23 02:25:58 by joandre-         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:28:12 by joandre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -62,8 +62,9 @@ static t_list	*clear_list(t_list **node)
 	while ((last_node(*node))->buff[i] && (last_node(*node))->buff[i] != '\n')
 		i++;
 	j = 0;
-	while ((last_node(*node))->buff[++i])
-		buffer[j++] = (last_node(*node))->buff[i];
+	if ((last_node(*node)->buff[i]))
+		while ((last_node(*node))->buff[++i])
+			buffer[j++] = (last_node(*node))->buff[i];
 	new->buff = buffer;
 	new->next = NULL;
 	return (free_node(node, new, buffer));
@@ -101,12 +102,9 @@ char	*get_next_line(int fd)
 {
 	char			*line;
 	static t_list	*node;
-	static char		*wipe;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (wipe)
-		free(wipe);
 	create_list(&node, fd);
 	if (!node)
 		return (NULL);
@@ -116,6 +114,22 @@ char	*get_next_line(int fd)
 	clean_buffer(line, get_line_size(node) + 1);
 	copy_line(node, line);
 	node = clear_list(&node);
-	wipe = line;
 	return (line);
 }
+/*
+ int	main(void)
+{
+	char	*line;
+	int	fd;
+	size_t	n;
+
+	n = 1;
+	fd = open("big_line_no_nl", O_RDONLY);
+	while ((line = get_next_line(fd)))
+	{
+		printf("[LINE %zu] %s", n++, line);
+		free (line);
+	}
+	close(fd);
+	return (0);
+}*/
