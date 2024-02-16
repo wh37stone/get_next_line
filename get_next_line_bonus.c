@@ -6,7 +6,7 @@
 /*   By: joandre- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 01:29:46 by joandre-          #+#    #+#             */
-/*   Updated: 2024/02/15 03:34:11 by joandre-         ###   ########.fr       */
+/*   Updated: 2024/02/16 15:43:35 by joandre-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -96,7 +96,7 @@ char	*get_next_line(int fd)
 	char			*line;
 	static t_list	*node[4242];
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > 4241 ||  BUFFER_SIZE <= 0)
 		return (NULL);
 	create_list(node, fd);
 	if (!node[fd])
